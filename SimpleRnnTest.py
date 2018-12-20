@@ -1,7 +1,7 @@
 from __future__ import print_function
 from keras.layers.recurrent import SimpleRNN
 from keras.models import Sequential
-from keras.layers import Dense, Activation
+from keras.layers import Dense, Activation, Dropout
 import numpy as np
 
 fin = open("data/us.txt", "rb")
@@ -22,7 +22,7 @@ nb_chars = len(chars)
 char2index = dict((c, i) for i, c in enumerate(chars))
 index2char = dict((i, c) for i, c in enumerate(chars))
 
-SEQLEN = 10
+SEQLEN = 30
 STEP = 1
 
 input_chars = []
@@ -53,6 +53,7 @@ model = Sequential()
 model.add(SimpleRNN(HIDDEN_SIZE, return_sequences=False,
                     input_shape=(SEQLEN, nb_chars),
                     unroll=True))
+model.add(Dropout(0.2))
 model.add(Dense(nb_chars))
 model.add(Activation("softmax"))
 
